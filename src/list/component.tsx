@@ -27,9 +27,21 @@ class List extends React.PureComponent<IListProps & IInternalListProps, IListSta
         return <div className='istk-list-items' ref={e => this._outer = e}>{children.slice(start, start + count)}</div>;
     }
 
+    componentWillMount(): void {
+        window.addEventListener('resize', this.recalculateCount);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener('resize', this.recalculateCount);
+    }
+
     componentDidMount(): void {
+        this.recalculateCount();
+    }
+
+    private recalculateCount = () => {
         const size = this._outer.clientHeight;
-        const count = Math.ceil(size / (this.props.itemHeight + 40));
+        const count = Math.ceil(size / (this.props.itemHeight));
         const stateCount = this.state ? this.state.count : 0;
 
         if (count !== stateCount)
@@ -66,7 +78,12 @@ class Scroll extends React.PureComponent<IScrollProps, IScrollState>{
 
 export default class extends React.PureComponent<IListProps, IListState & IInternalListState> {
     render(): JSX.Element {
-        return <div className='istk-list'><List {...this.props} relStart={this.state ? this.state.relStart : 0} /><Scroll moveTo={this.moveTo} /></div>;
+        return <div className='istk-list'>
+            <div>
+                <List {...this.props} relStart={this.state ? this.state.relStart : 0} />
+                <Scroll moveTo={this.moveTo} />
+            </div>
+        </div>;
     }
 
     private moveTo = (relStart: number) => {

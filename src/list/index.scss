@@ -1,28 +1,41 @@
-﻿.istk-list {
-    white-space: nowrap;
-    background: red;
+﻿$scrollbarWidth: 20px;
+
+.istk-list {
     height: 100%;
     width: 100%;
+
+    > div {
+        padding-right: $scrollbarWidth;
+        white-space: nowrap;
+        height: 100%;
+    }
 
     .istk-list-items {
         display: inline-block;
         overflow-y: hidden;
-        background: blue;
         height: 100%;
         width: 100%;
 
-        > div {
+        > div:hover {
             background: green;
-            padding: 10px;
-            margin: 10px;
         }
     }
 
     .istk-list-scroll {
+        width: $scrollbarWidth;
         display: inline-block;
         vertical-align: top;
+        position: relative;
         background: cyan;
         height: 100%;
-        width: 20px;
+
+        > div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 20px;
+            bottom: 20px;
+            background: pink;
+        }
     }
 }
