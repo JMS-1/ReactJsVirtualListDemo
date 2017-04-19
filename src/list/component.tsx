@@ -24,7 +24,7 @@ class List extends React.PureComponent<IListProps & IInternalListProps, IListSta
         const start = this.props.relStart * children.length;
         const count = this.state ? this.state.count : 0;
 
-        return <div ref={e => this._outer = e}>{children.slice(start, start + count)}</div>;
+        return <div className='istk-list-items' ref={e => this._outer = e}>{children.slice(start, start + count)}</div>;
     }
 
     componentDidMount(): void {
@@ -46,7 +46,7 @@ interface IScrollState {
 
 class Scroll extends React.PureComponent<IScrollProps, IScrollState>{
     render(): JSX.Element {
-        return <div onClick={this.onClick}>&nbsp;</div>;
+        return <div className='istk-list-scroll' onClick={this.onClick}>&nbsp;</div>;
     }
 
     private onClick = (ev: React.MouseEvent<HTMLDivElement>) => {
@@ -66,7 +66,7 @@ class Scroll extends React.PureComponent<IScrollProps, IScrollState>{
 
 export default class extends React.PureComponent<IListProps, IListState & IInternalListState> {
     render(): JSX.Element {
-        return <div className='list'><List {...this.props} relStart={this.state ? this.state.relStart : 0} /><Scroll moveTo={this.moveTo} /></div>;
+        return <div className='istk-list'><List {...this.props} relStart={this.state ? this.state.relStart : 0} /><Scroll moveTo={this.moveTo} /></div>;
     }
 
     private moveTo = (relStart: number) => {

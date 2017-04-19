@@ -1,1 +1,11 @@
-﻿@import "src/list/index";
+﻿em-root {
+    display: block;
+    border: 1px solid black;
+    background: yellow;
+    width: 400px;
+    height: 280px;
+    margin: 50px;
+    padding: 20px;
+}
+
+@import "src/list/index";

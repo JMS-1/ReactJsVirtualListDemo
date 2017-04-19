@@ -1,1 +1,28 @@
-﻿
+﻿.istk-list {
+    white-space: nowrap;
+    background: red;
+    height: 100%;
+    width: 100%;
+
+    .istk-list-items {
+        display: inline-block;
+        overflow-y: hidden;
+        background: blue;
+        height: 100%;
+        width: 100%;
+
+        > div {
+            background: green;
+            padding: 10px;
+            margin: 10px;
+        }
+    }
+
+    .istk-list-scroll {
+        display: inline-block;
+        vertical-align: top;
+        background: cyan;
+        height: 100%;
+        width: 20px;
+    }
+}

@@ -19,7 +19,7 @@ const height = 50;
 class Root extends React.PureComponent<IRootProps, IRootState>
 {
     render(): JSX.Element {
-        return <List itemHeight={height}>{names.map(name => <div key={name} style={{ height: `${height}px` }}>{name}<img src="http://jochen.jochen-manns.de/wp-content/uploads/2016/08/Dashboard.png" height={30}/></div>)}</List>;
+        return <List itemHeight={height}>{names.map(name => <div key={name} style={{ height: `${height}px` }}>{name}</div>)}</List>;
     }
 }
 
