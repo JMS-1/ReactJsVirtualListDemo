@@ -26,16 +26,29 @@
         display: inline-block;
         vertical-align: top;
         position: relative;
-        background: cyan;
         height: 100%;
 
         > div {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 20px;
-            bottom: 20px;
-            background: pink;
+            &:first-child {
+                top: 0;
+                width: 2px;
+                height: 100%;
+                position: absolute;
+                background: lightgrey;
+                border-radius: 1px 1px;
+                border: 1px solid grey;
+                left: ($scrollbarWidth / 2) - 2px;
+            }
+
+            &:last-child {
+                width: 8px;
+                opacity: 0.9;
+                position: absolute;
+                background: darkgrey;
+                border-radius: 4px 4px;
+                border: 1px solid darkgrey;
+                left: ($scrollbarWidth / 2) - 5px;
+            }
         }
     }
 }
