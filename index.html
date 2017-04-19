@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.js"></script>
+
+    <script>
+        requirejs.config({
+            paths: {
+                'react': 'https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react',
+                'react-dom': 'https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom'
+            }
+        });
+    </script>
+
+    <script src="index.js"></script>
+
+    <style>
+        em-root {
+            display: block;
+            border: 1px solid black;
+            background: yellow;
+            width: 400px;
+            height: 280px;
+            margin: 50px;
+            padding: 20px;
+        }
+
+        .list {
+            background: red;
+            width: 100%;
+            height: 100%;
+            white-space: nowrap;
+        }
+
+            .list > div {
+                height: 100%;
+                width: 100%;
+            }
+
+                .list > div:first-child {
+                    background: blue;
+                    overflow-y: hidden;
+                    display: inline-block;
+                }
+
+                    .list > div:first-child > div {
+                        background: green;
+                        padding: 10px;
+                        margin: 10px;
+                    }
+
+                .list > div:last-child {
+                    background: cyan;
+                    display: inline-block;
+                    width: 20px;
+                    vertical-align: top;
+                }
+    </style>
+</head>
+<body onload="require(['app'])">
+    <em-root></em-root>
+</body>
+</html>
