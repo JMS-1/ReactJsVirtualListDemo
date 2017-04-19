@@ -100,6 +100,7 @@
     <TypeScriptCompile Include="src\app.tsx" />
     <TypeScriptCompile Include="src\list\component.tsx" />
     <TypeScriptCompile Include="src\list\index.ts" />
+    <TypeScriptCompile Include="src\list\viewModel.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
