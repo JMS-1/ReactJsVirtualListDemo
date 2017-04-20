@@ -140,7 +140,7 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>cd "$(ProjectDir)"
-gulp build</PostBuildEvent>
+node node_modules/gulp/bin/gulp.js build</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
