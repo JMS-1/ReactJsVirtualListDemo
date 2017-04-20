@@ -12,6 +12,7 @@ body {
 
 em-root {
     border: 1px solid black;
+    overflow: hidden;
     background: #0f4;
     display: block;
     padding: 15px;
@@ -21,6 +22,7 @@ em-root {
 
 .item {
     height: 36px;
+    width: 400px;
     margin: 2px 4px;
     padding: 4px 8px;
     background: white;

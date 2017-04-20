@@ -35,10 +35,14 @@ class List extends React.Component<IViewModelProps<IVirtualListItems>, INoState>
 
 class Scroll extends React.Component<IViewModelProps<IVirtualListSlider>, INoState>{
     render(): JSX.Element {
-        return this.props.vm && <div className='istk-list-scroll' onClick={this.onClick}><div /><div style={{ height: `${this.props.vm.sliderHeight}%`, top: `${this.props.vm.sliderPosition}%` }} /></div>;
+        return this.props.vm &&
+            <div className='istk-list-scroll' onClick={this.onClickToMove}>
+                <div />
+                <div style={{ height: `${this.props.vm.sliderHeight}%`, top: `${this.props.vm.sliderPosition}%` }} onMouseDown={this.onClickToDrag} />
+            </div>;
     }
 
-    private onClick = (ev: React.MouseEvent<HTMLDivElement>) => {
+    private onClickToMove = (ev: React.MouseEvent<HTMLDivElement>) => {
         const y = ev.pageY - ev.currentTarget.offsetTop;
         if (y < 0)
             return;
@@ -49,6 +53,33 @@ class Scroll extends React.Component<IViewModelProps<IVirtualListSlider>, INoSta
 
         this.props.vm.setPosition(y / h);
     }
+
+    private onClickToDrag = (ev: React.MouseEvent<HTMLDivElement>) => {
+        ev.preventDefault();
+
+        const parent = ev.currentTarget.parentElement;
+
+        this.props.vm.startDrag(ev.pageX, ev.pageY, parent.offsetLeft, parent.offsetTop, parent.offsetWidth, parent.offsetHeight);
+    }
+
+    private onStopDrag = (ev: MouseEvent) => {
+        this.props.vm.endDrag();
+    }
+
+    private onDrag = (ev: MouseEvent) => {
+        this.props.vm.drag(ev.pageX, ev.pageY);
+    }
+
+    componentWillMount(): void {
+        window.addEventListener('mouseup', this.onStopDrag);
+        window.addEventListener('mousemove', this.onDrag);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener('mouseup', this.onStopDrag);
+        window.removeEventListener('mousemove', this.onDrag);
+    }
+
 }
 
 interface IListProps {
