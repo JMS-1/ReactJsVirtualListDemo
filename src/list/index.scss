@@ -1,8 +1,8 @@
 ﻿$scrollbarWidth: 20px;
 
 .istk-list {
+    display: inline-block;
     height: 100%;
-    width: 100%;
 
     > div {
         padding-right: $scrollbarWidth;
@@ -14,7 +14,6 @@
         display: inline-block;
         overflow-y: hidden;
         height: 100%;
-        width: 100%;
 
         > div:hover {
             background: green;

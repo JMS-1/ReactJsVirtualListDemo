@@ -30,6 +30,12 @@ export interface IVirtualListSlider {
     readonly sliderHeight: number;
 
     readonly sliderPosition: number;
+
+    startDrag(x: number, y: number, left: number, top: number, width: number, height: number): void;
+
+    drag(x: number, y: number): void;
+
+    endDrag(): void;
 }
 
 export default class implements IVirtualList, IVirtualListItems, IVirtualListSlider {
@@ -69,6 +75,22 @@ export default class implements IVirtualList, IVirtualListItems, IVirtualListSli
 
     // Meldet eine neue Position des Schiebers.
     setPosition(relPosition: number): void {
+        // Wir haben gar keine Daten.
+        if (this._total < 1)
+            return;
+
+        // Aktuelle relative Position ermitteln.
+        const sliderStart = this.sliderPosition / 100;
+        const sliderHeight = this.sliderHeight / 100;
+
+        // Nach oben.
+        if (relPosition < sliderStart)
+            this.moveTo(Math.max(0, sliderStart - sliderHeight));
+        else if (relPosition > (sliderStart + sliderHeight))
+            this.moveTo(Math.min(1, sliderStart + sliderHeight));
+    }
+
+    private moveTo(relPosition: number): void {
         // Relative Position in das zughörige Element umrechnen - wir achten darauf, dass der Schieber nicht aus der Liste rutscht.
         var start = Math.max(0, Math.min(this._total - 1, Math.floor(Math.min(1 - this.sliderHeight / 100, relPosition) * this._total)));
 
@@ -100,7 +122,7 @@ export default class implements IVirtualList, IVirtualListItems, IVirtualListSli
 
         // Eventuell verrutscht der Schieber nun noch.
         if (this._total > 0)
-            this.setPosition(this.start / this._total);
+            this.moveTo(this.start / this._total);
 
         // Anzeige auf jeden Fall aktualisieren.
         this._site.refresh();
@@ -124,5 +146,47 @@ export default class implements IVirtualList, IVirtualListItems, IVirtualListSli
 
         // Der Schieber verläßt niemals den Bereich des Balkens, ansonsten ist die Berechnung trivial.
         return 100 * Math.min(1 - this.sliderHeight / 100, this.start / this._total);
+    }
+
+    // Enthält den Punkt an dem auf den Schieber geklickt wurde.
+    private _dragStart: { x: number; y: number; left: number; top: number; width: number; height: number; start: number; }
+
+    // Beginnt mit dem Verschieben des Schiebers.
+    startDrag(x: number, y: number, left: number, top: number, width: number, height: number): void {
+        // Wir haben gar keine Daten.
+        if (this._total < 1)
+            return;
+
+        // Kontext merken.
+        this._dragStart = { x, y, left, top, width, height, start: this.start };
+    }
+
+    // Beendet das Verschieben des Schiebers.
+    endDrag(): void {
+        // Kontext vergessen.
+        this._dragStart = undefined;
+    }
+
+    // Meldet die Position der Maus.
+    drag(x: number, y: number): void {
+        // Wir ziehen gerade gar nicht.
+        if (!this._dragStart)
+            return;
+
+        // Wird nur berücksichtigt, wenn sich das noch im Bereich des Balkens befindet.
+        if ((this._dragStart.top - y) > 20)
+            return;
+        if ((y - (this._dragStart.top + this._dragStart.height)) > 20)
+            return;
+        if ((this._dragStart.left - x) > 40)
+            return;
+        if ((x - (this._dragStart.left + this._dragStart.width)) > 40)
+            return;
+
+        // Verschiebung ermitteln.
+        const delta = (y - this._dragStart.y) / this._dragStart.height;
+
+        // Anwenden.
+        this.moveTo(this._dragStart.start / this._total + delta);
     }
 }
