@@ -92,7 +92,7 @@ export default class implements IVirtualList, IVirtualListItems, IVirtualListSli
 
     private moveTo(relPosition: number): void {
         // Relative Position in das zughörige Element umrechnen - wir achten darauf, dass der Schieber nicht aus der Liste rutscht.
-        var start = Math.max(0, Math.min(this._total - 1, Math.floor(Math.min(1 - this.sliderHeight / 100, relPosition) * this._total)));
+        var start = Math.max(0, Math.min(this._total - 1, Math.round(Math.min(1 - this.sliderHeight / 100, relPosition) * this._total)));
 
         // Es hat nicht nichts verändert.
         if (start === this.start)

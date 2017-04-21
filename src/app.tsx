@@ -11,7 +11,7 @@ interface IRootState {
 
 const names = [];
 
-for (let i = 0; i++ < 250;)
+for (let i = 0; i++ < 10;)
     names.push(`Item ${i}`);
 
 class Root extends React.PureComponent<IRootProps, IRootState>
