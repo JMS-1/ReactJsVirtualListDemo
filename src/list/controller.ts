@@ -1,56 +1,85 @@
-﻿export interface IViewModelProps<TViewModelType> {
-    readonly vm: TViewModelType;
-}
-
-export interface IVirtualListSite {
+﻿// Eine React.Js Komponente.
+export interface IView {
+    // Fordert zur Aktualisierung der Anzeige auf.
     refresh(): void;
 }
 
-export interface IVirtualList {
-    readonly itemsViewModel: IVirtualListItems;
+// Die Grundkonfiguration einer Controller gesteuerten React.Js Komponente.
+export interface IViewProps<TControllerType> {
+    // Der Controller.
+    readonly ctl: TControllerType;
+}
 
-    readonly sliderViewModel: IVirtualListSlider;
-
+// Die Schnittstelle einer jeden Steuerung.
+export interface IController {
+    // Löst die Steuerung von der Anzeige.
     disconnect(): void;
 }
 
-export interface IVirtualListItems {
+// Die Steuerung einer virtuellen Liste.
+export interface IVirtualListController extends IController {
+    // Die Steuerung für die Anzeige der Listenelemente.
+    readonly itemsController: IVirtualListItemController;
+
+    // Die Steuerung für die Anzeige des Schiebebalkens.
+    readonly sliderController: IVirtualListSliderController;
+}
+
+// Steuerung für die Anzeige der Listenelemente.
+export interface IVirtualListItemController {
+    // Das erste anzuzeigende Element.
     readonly start: number;
 
+    // Die Anzahl der anzuzeigenden Elemente.
     readonly count: number;
 
+    // Meldet die gesamte Anzahl von Elementen.
     setTotal(newTotal: number): void;
 
+    // Legt die Größe eines einzelnen Elements in Pixeln fest.
     setHeight(newHeight: number): void;
 }
 
-export interface IVirtualListSlider {
-    setPosition(relPosition: number): void;
+// Steuerung für den Schiebebalken.
+export interface IVirtualListSliderController {
+    // Die Anzeige meldet einen Mausklick im Bereich des Schiebebalkens.
+    onClick(relPosition: number): void;
 
+    // Meldet die relative Größe des Schiebers.
     readonly sliderHeight: number;
 
+    // Meldet die relative Position des Schiebers - genauer des Anfangs.
     readonly sliderPosition: number;
 
+    // Beginnt eine Verschiebeoperation mit der Maus.
     startDrag(x: number, y: number, left: number, top: number, width: number, height: number): void;
 
+    // Meldet die aktuelle Mausposition - passend zu startDrag!
     drag(x: number, y: number): void;
 
+    // Beendet eine Verschiebeoperation mit der Maus.
     endDrag(): void;
 }
 
-export default class implements IVirtualList, IVirtualListItems, IVirtualListSlider {
-    constructor(private readonly _itemHeight: number, private _site: IVirtualListSite) {
+// Steuerung für eine virtuelle Liste.
+export default class implements IVirtualListController, IVirtualListItemController, IVirtualListSliderController {
+
+    // Erstellt eine neue Steuerung mit den vorher bekannten Daten und verbindet diese mit einer Anzeige.
+    constructor(private readonly _itemHeight: number, private _site: IView) {
     }
 
+    // Trennt die Verbindung zur Anzeige.
     disconnect(): void {
         this._site = undefined;
     }
 
-    get itemsViewModel(): IVirtualListItems {
+    // Meldet die zugehörige Steuerung der Liste.
+    get itemsController(): IVirtualListItemController {
         return this;
     }
 
-    get sliderViewModel(): IVirtualListSlider {
+    // Meldet die zugehörige Steuerung des Schiebers - sofern es da etwas zu steuern gibt.
+    get sliderController(): IVirtualListSliderController {
         return (this.count < this._total) ? this : null;
     }
 
@@ -73,8 +102,8 @@ export default class implements IVirtualList, IVirtualListItems, IVirtualListSli
     // Die laufende Nummer des ersten anzuzeigenden Elementes.
     start = 0;
 
-    // Meldet eine neue Position des Schiebers.
-    setPosition(relPosition: number): void {
+    // Meldet einen Mausklick.
+    onClick(relPosition: number): void {
         // Wir haben gar keine Daten.
         if (this._total < 1)
             return;
@@ -90,6 +119,7 @@ export default class implements IVirtualList, IVirtualListItems, IVirtualListSli
             this.moveTo(Math.min(1, sliderStart + sliderHeight));
     }
 
+    // Verändert die Position des Schiebereglers.
     private moveTo(relPosition: number): void {
         // Relative Position in das zughörige Element umrechnen - wir achten darauf, dass der Schieber nicht aus der Liste rutscht.
         var start = Math.max(0, Math.min(this._total - 1, Math.round(Math.min(1 - this.sliderHeight / 100, relPosition) * this._total)));
