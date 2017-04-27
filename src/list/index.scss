@@ -7,13 +7,13 @@
     width: 100%;
     // Liste und Scrollbar gehören nebeneinander.
     > div {
+        padding-right: $scrollbarWidth;
         white-space: nowrap;
         position: relative;
         height: 100%;
-        width: 100%;
         // Die Liste ist nichts besonders, aber wir müssen aufpassen, dass das letzte Element nicht unten heraus ragt.
         .istk-list-items {
-            padding-right: $scrollbarWidth / 4;
+            padding-right: $scrollbarWidth;
             display: inline-block;
             overflow-y: hidden;
             height: 100%;
@@ -25,7 +25,7 @@
         }
         // Bei dem Scrollbar wurde bei der Höhe etwas getrickst - eventuell muss man diesen auch mitrechnen.
         .istk-list-scroll {
-            right: $scrollbarWidth / 2;
+            right: $scrollbarWidth;
             width: $scrollbarWidth;
             display: inline-block;
             vertical-align: top;
