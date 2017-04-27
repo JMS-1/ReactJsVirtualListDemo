@@ -4,50 +4,56 @@
     // Die Liste selbst kann in den Textfluss eingebettet werden und ist immer so hoch wie der Container.
     display: inline-block;
     height: 100%;
+    width: 100%;
     // Liste und Scrollbar gehören nebeneinander.
     > div {
         white-space: nowrap;
-        height: 100%;
-    }
-    // Die Liste ist nichts besonders, aber wir müssen aufpassen, dass das letzte Element nicht unten heraus ragt.
-    .istk-list-items {
-        display: inline-block;
-        overflow-y: hidden;
-        height: 100%;
-        // Das ist nur zum Spaß.
-        > div:hover {
-            background: green;
-        }
-    }
-    // Bei dem Scrollbar wurde bei der Höhe etwas getrickst - eventuell muss man diesen auch mitrechnen.
-    .istk-list-scroll {
-        width: $scrollbarWidth;
-        display: inline-block;
-        vertical-align: top;
         position: relative;
-        height: 99%;
-
-        > div {
-            // Das ist der Hintergrund des Schiebers.
-            &:first-child {
-                top: 0;
-                width: 2px;
-                height: 100%;
-                background: white;
-                position: absolute;
-                border-radius: 1px 1px;
-                border: 1px solid grey;
-                left: ($scrollbarWidth / 2) - 2px;
+        height: 100%;
+        width: 100%;
+        // Die Liste ist nichts besonders, aber wir müssen aufpassen, dass das letzte Element nicht unten heraus ragt.
+        .istk-list-items {
+            padding-right: $scrollbarWidth / 4;
+            display: inline-block;
+            overflow-y: hidden;
+            height: 100%;
+            width: 100%;
+            // Das ist nur zum Spaß.
+            > div:hover {
+                background: green;
             }
-            // Das ist der Schieberegler.
-            &:last-child {
-                width: 8px;
-                opacity: 0.4;
-                background: black;
-                position: absolute;
-                border-radius: 4px 4px;
-                border: 1px solid black;
-                left: ($scrollbarWidth / 2) - 5px;
+        }
+        // Bei dem Scrollbar wurde bei der Höhe etwas getrickst - eventuell muss man diesen auch mitrechnen.
+        .istk-list-scroll {
+            right: $scrollbarWidth / 2;
+            width: $scrollbarWidth;
+            display: inline-block;
+            vertical-align: top;
+            position: relative;
+            height: 99%;
+
+            > div {
+                // Das ist der Hintergrund des Schiebers.
+                &:first-child {
+                    top: 0;
+                    width: 2px;
+                    height: 100%;
+                    background: white;
+                    position: absolute;
+                    border-radius: 1px 1px;
+                    border: 1px solid grey;
+                    left: ($scrollbarWidth / 2) - 2px;
+                }
+                // Das ist der Schieberegler.
+                &:last-child {
+                    width: 8px;
+                    opacity: 0.4;
+                    background: black;
+                    position: absolute;
+                    border-radius: 4px 4px;
+                    border: 1px solid black;
+                    left: ($scrollbarWidth / 2) - 5px;
+                }
             }
         }
     }

@@ -23,8 +23,8 @@ em-root {
 
 // Hier spezifizieren wir ein einzelnes Listenelement - im Beispiel muss die Höhe zur Konfiguration der React.Js Komponente passen.
 .item {
+    width: auto;
     height: 36px;
-    width: 400px;
     margin: 2px 4px;
     padding: 4px 8px;
     background: white;
