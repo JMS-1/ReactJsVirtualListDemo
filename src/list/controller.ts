@@ -45,6 +45,9 @@ export interface IVirtualListSliderController {
     // Die Anzeige meldet einen Mausklick im Bereich des Schiebebalkens.
     onClick(relPosition: number): void;
 
+    // Wünscht die Verschiebung um einzelne Listeneinträge.
+    onMove(step: number): void;
+
     // Meldet die relative Größe des Schiebers.
     readonly sliderHeight: number;
 
@@ -101,6 +104,22 @@ export default class implements IVirtualListController, IVirtualListItemControll
 
     // Die laufende Nummer des ersten anzuzeigenden Elementes.
     start = 0;
+
+    // Wünscht die Verschiebung um einzelne Listeneinträge.
+    onMove(step: number): void {
+        // Gewünschte Verschiebung durchführen - dabei immer die Grenzen beachten.
+        var start = Math.max(0, Math.min(this._total - 1, this.start + step));
+
+        // Es hat nicht nichts verändert.
+        if (start === this.start)
+            return;
+
+        // Neuen Wert übernehmen.
+        this.start = start;
+
+        // Anzeige erneuern.
+        this._site.refresh();
+    }
 
     // Meldet einen Mausklick.
     onClick(relPosition: number): void {

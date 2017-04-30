@@ -84,8 +84,12 @@ class Scroll extends React.Component<IViewProps<IVirtualListSliderController>, I
         if (y > h)
             return;
 
-        // Relative Position an die Steuerung geben.
-        this.props.ctl.onClick(y / h);
+        // Wir müssen eigentlich nur wissen, ob wir über oder unter dem Knopf sind.
+        const rel = 100 * y / h;
+        if (rel < this.props.ctl.sliderPosition)
+            this.props.ctl.onClick(0);
+        else if (rel >= (this.props.ctl.sliderPosition + this.props.ctl.sliderHeight))
+            this.props.ctl.onClick(1);
     }
 
     // Beim Klicken auf den Schieberegler beginnen wir mit dem Verschieben.
@@ -136,12 +140,24 @@ export default class extends React.Component<IListProps, INoState> {
 
     // Erstellt die Anzeigelemente der virtuellen Liste.
     render(): JSX.Element {
-        return <div className='istk-list'>
+        return <div className='istk-list' onWheel={this.onMoveWithWheel}>
             <div>
                 <List ctl={this._controller.itemsController} children={this.props.children} />
                 <Scroll ctl={this._controller.sliderController} />
             </div>
         </div>;
+    }
+
+    // Reaktion auf das Mausrad.
+    private onMoveWithWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
+        // Nur, wenn wir überhaupt verschieben können.
+        const slider = this._controller.sliderController;
+
+        // Ohne Geschwindigkeit, nur die Richtung.
+        if (ev.deltaY < 0)
+            slider.onMove(-1);
+        else if (ev.deltaY > 0)
+            slider.onMove(+1);
     }
 
     // Beim Einklinken in das DOM erstellen wir unsere Steuerung.
